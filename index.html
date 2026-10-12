@@ -1000,7 +1000,7 @@ FIN</pre>
                         continue;
                     }
                     const errText = await res.text();
-                    throw new Error(`API Error ${res.status}: ${errText}`);
+                    throw new Error(`Error ${res.status}: ${errText}`);
                 } catch (e) {
                     if (i === retries) throw e;
                     await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
@@ -1014,7 +1014,12 @@ FIN</pre>
             const errorMsg = document.getElementById('ai-error-msg');
             const container = document.getElementById('ai-exercises-container');
 
-            // Clave API por defecto (hardcoded)
+            /* 
+             * ¡IMPORTANTE! 
+             * Para que funcione AQUÍ en el editor, apiKey DEBE estar vacía ("").
+             * Cuando lo subas a GitHub, puedes pegar tu clave entre las comillas:
+             * const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
+             */
             const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
 
             // Bloquear botón y mostrar carga
@@ -1065,6 +1070,11 @@ FIN</pre>
 
                 const result = await response.json();
                 
+                // Chequear si la API devolvió un error interno de validación
+                if (result.error) {
+                     throw new Error(`API Error ${result.error.code}: ${result.error.message}`);
+                }
+                
                 const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
                 
                 if (jsonText) {
@@ -1084,7 +1094,7 @@ FIN</pre>
 
             } catch (error) {
                 console.error("Error generating exercises:", error);
-                errorMsg.textContent = `Hubo un error al contactar con Gemini: ${error.message}`;
+                errorMsg.textContent = `Hubo un error al contactar con la Inteligencia Artificial: ${error.message}`;
                 errorMsg.classList.remove('hidden');
             } finally {
                 // Restaurar botón y ocultar carga
