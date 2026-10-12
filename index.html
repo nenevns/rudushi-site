@@ -755,7 +755,7 @@ FIN</pre>
                     <p class="text-blue-700 dark:text-blue-400 mb-4">¿Necesitas más práctica? La IA de Gemini puede crear ejercicios infinitos sobre algoritmos, E-P-S y pensamiento computacional adaptados a este temario.</p>
                     
                     <button id="btn-generate-ai" onclick="generateAIExercises()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2">
-                        <span>Generar 2 Nuevos Ejercicios</span>
+                        <span>Generar 20 Nuevos Ejercicios</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </button>
 
@@ -1014,12 +1014,7 @@ FIN</pre>
             const errorMsg = document.getElementById('ai-error-msg');
             const container = document.getElementById('ai-exercises-container');
 
-            /* 
-             * ¡IMPORTANTE! 
-             * Para que funcione AQUÍ en el editor, apiKey DEBE estar vacía ("").
-             * Cuando lo subas a GitHub, puedes pegar tu clave entre las comillas:
-             * const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
-             */
+            // ¡IMPORTANTE! He vuelto a colocar tu clave AQ real.
             const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
 
             // Bloquear botón y mostrar carga
@@ -1029,12 +1024,12 @@ FIN</pre>
             loader.classList.add('flex');
             errorMsg.classList.add('hidden');
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
             // Instrucciones para la IA pidiendo un JSON estricto
             const prompt = `
             Actúa como un profesor de informática de Grado Medio (SMR).
-            Genera 2 ejercicios prácticos interactivos sobre "Introducción a la Programación" (Algoritmos, Modelo Entrada-Proceso-Salida, Pseudocódigo básico, Abstracción).
+            Genera 20 ejercicios prácticos interactivos sobre "Introducción a la Programación" (Algoritmos, Modelo Entrada-Proceso-Salida, Pseudocódigo básico, Abstracción).
             Los ejercicios deben ser variados. Usa un tono educativo y motivador.
             `;
 
