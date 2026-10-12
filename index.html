@@ -743,6 +743,30 @@ FIN</pre>
                     </div>
                 </div>
 
+                <!-- Contenedor para nuevos ejercicios generados por IA -->
+                <div id="ai-exercises-container"></div>
+
+                <!-- Botón de Gemini y Loader -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800 mb-6 flex flex-col items-center text-center">
+                    <h3 class="text-xl font-bold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 10.5C16.0294 10.5 12 6.47056 12 1.5C12 6.47056 7.97056 10.5 3 10.5C7.97056 10.5 12 14.5294 12 19.5C12 14.5294 16.0294 10.5 21 10.5Z" fill="currentColor"/></svg>
+                        Generador de Ejercicios Inteligente
+                    </h3>
+                    <p class="text-blue-700 dark:text-blue-400 mb-4">¿Necesitas más práctica? La IA de Gemini puede crear ejercicios infinitos sobre algoritmos, E-P-S y pensamiento computacional adaptados a este temario.</p>
+                    
+                    <button id="btn-generate-ai" onclick="generateAIExercises()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                        <span>Generar 2 Nuevos Ejercicios</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </button>
+
+                    <div id="ai-loading" class="hidden flex-col items-center mt-4">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400 mb-2"></div>
+                        <p class="text-sm text-blue-600 dark:text-blue-400 font-medium animate-pulse">Consultando a Gemini... Creando ejercicios únicos...</p>
+                    </div>
+                    
+                    <div id="ai-error-msg" class="hidden mt-4 p-3 bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200 rounded border border-red-300 dark:border-red-700 text-sm w-full"></div>
+                </div>
+
                 <div class="mt-8 flex justify-start">
                     <button onclick="showSection('esquema')" class="text-green-600 dark:text-green-400 hover:underline">&larr; Volver al Esquema General</button>
                 </div>
@@ -960,6 +984,212 @@ FIN</pre>
                 showFeedback('feedback-ex5', true, '¡Correcto! Es el clásico patrón de Validación. Muy útil para el proyecto de SMR Manager.');
             } else {
                 showFeedback('feedback-ex5', false, 'Incorrecto. No se repite infinitamente y no estamos limpiando una lista. Analiza los pasos: Piden algo -> lo comprueban -> te dejan pasar.');
+            }
+        }
+
+        let aiExerciseCounter = 0;
+
+        // Función auxiliar para reintentos en caso de saturación de la API (exponencial)
+        async function fetchWithRetry(url, options, retries = 2) {
+            for (let i = 0; i <= retries; i++) {
+                try {
+                    const res = await fetch(url, options);
+                    if (res.ok) return res;
+                    if (res.status === 429) { // Rate limit
+                        await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+                        continue;
+                    }
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                } catch (e) {
+                    if (i === retries) throw e;
+                    await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
+                }
+            }
+        }
+
+        async function generateAIExercises() {
+            const btn = document.getElementById('btn-generate-ai');
+            const loader = document.getElementById('ai-loading');
+            const errorMsg = document.getElementById('ai-error-msg');
+            const container = document.getElementById('ai-exercises-container');
+
+            // Bloquear botón y mostrar carga
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            loader.classList.remove('hidden');
+            loader.classList.add('flex');
+            errorMsg.classList.add('hidden');
+
+            const apiKey = ""; // El canvas inyectará la API KEY automáticamente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            // Instrucciones para la IA pidiendo un JSON estricto
+            const prompt = `
+            Actúa como un profesor de informática de Grado Medio (SMR).
+            Genera 2 ejercicios prácticos interactivos sobre "Introducción a la Programación" (Algoritmos, Modelo Entrada-Proceso-Salida, Pseudocódigo básico, Abstracción).
+            Los ejercicios deben ser variados. Usa un tono educativo y motivador.
+            Devuelve un JSON estrictamente con la siguiente estructura:
+            `;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                type: { type: "STRING", description: "Tipo: 'radio' (selección única), 'input' (escribir texto/número)." },
+                                title: { type: "STRING", description: "Título del ejercicio" },
+                                context: { type: "STRING", description: "Contexto o planteamiento" },
+                                options: { type: "ARRAY", items: { type: "STRING" }, description: "Opciones si es 'radio'. Vacio si es 'input'." },
+                                correctAnswer: { type: "STRING", description: "Texto exacto de la respuesta correcta" },
+                                successMessage: { type: "STRING", description: "Mensaje si acierta, explicando el por qué." },
+                                errorMessage: { type: "STRING", description: "Mensaje si falla, dando una pequeña pista." }
+                            },
+                            required: ["type", "title", "context", "options", "correctAnswer", "successMessage", "errorMessage"]
+                        }
+                    }
+                }
+            };
+
+            try {
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
+                    const jsonText = result.candidates[0].content.parts[0].text;
+                    const exercises = JSON.parse(jsonText);
+                    
+                    // Renderizar cada ejercicio en la interfaz
+                    exercises.forEach(ex => {
+                        aiExerciseCounter++;
+                        renderAIExercise(ex, aiExerciseCounter, container);
+                    });
+                } else {
+                    throw new Error("Formato de respuesta inesperado.");
+                }
+
+            } catch (error) {
+                console.error("Error generating exercises:", error);
+                errorMsg.textContent = "Hubo un error al contactar con Gemini. Por favor, inténtalo de nuevo en unos segundos.";
+                errorMsg.classList.remove('hidden');
+            } finally {
+                // Restaurar botón y ocultar carga
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                loader.classList.add('hidden');
+                loader.classList.remove('flex');
+            }
+        }
+
+        function renderAIExercise(ex, idSuffix, container) {
+            const exId = `ai-ex-${idSuffix}`;
+            const feedbackId = `feedback-${exId}`;
+            
+            const card = document.createElement('div');
+            card.className = "bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-blue-200 dark:border-blue-700 mb-6 border-t-4 border-t-blue-500 transition-all duration-500 ease-in-out opacity-0 translate-y-4";
+            
+            const headerHTML = `
+                <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-2 mb-4">
+                    <h3 class="m-0 text-gray-800 dark:text-white border-none flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none"><path d="M21 10.5C16.0294 10.5 12 6.47056 12 1.5C12 6.47056 7.97056 10.5 3 10.5C7.97056 10.5 12 14.5294 12 19.5C12 14.5294 16.0294 10.5 21 10.5Z" fill="currentColor"/></svg>
+                        ${ex.title}
+                    </h3>
+                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs font-semibold px-2.5 py-0.5 rounded whitespace-nowrap">Por IA</span>
+                </div>
+                <p class="mb-4 text-gray-700 dark:text-gray-300">${ex.context}</p>
+            `;
+            card.innerHTML = headerHTML;
+
+            const inputArea = document.createElement('div');
+            inputArea.className = "space-y-4 mb-4";
+
+            if (ex.type === 'radio' && ex.options && ex.options.length > 0) {
+                ex.options.forEach((opt, idx) => {
+                    const label = document.createElement('label');
+                    label.className = "block p-3 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer flex items-start gap-2";
+                    
+                    const input = document.createElement('input');
+                    input.type = "radio";
+                    input.name = exId;
+                    input.value = opt;
+                    input.className = "mt-1 text-blue-600 focus:ring-blue-500";
+                    
+                    const span = document.createElement('span');
+                    span.textContent = opt;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    inputArea.appendChild(label);
+                });
+            } else {
+                const label = document.createElement('label');
+                label.className = "block text-sm font-bold mb-1";
+                label.textContent = "Tu respuesta:";
+                
+                const input = document.createElement('input');
+                input.type = "text";
+                input.id = `input-${exId}`;
+                input.className = "w-full p-2 border rounded bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none";
+                input.placeholder = "Escribe tu respuesta aquí...";
+                
+                inputArea.appendChild(label);
+                inputArea.appendChild(input);
+            }
+
+            card.appendChild(inputArea);
+
+            // Botón de comprobar
+            const btn = document.createElement('button');
+            btn.className = "bg-blue-100 hover:bg-blue-200 text-blue-800 dark:bg-blue-900/50 dark:hover:bg-blue-900/80 dark:text-blue-300 font-bold py-2 px-4 rounded transition";
+            btn.textContent = "Comprobar IA";
+            btn.onclick = () => checkAIExercise(ex, exId, feedbackId);
+            
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.id = feedbackId;
+            feedbackDiv.className = "hidden p-3 rounded mt-2 text-sm";
+
+            card.appendChild(btn);
+            card.appendChild(feedbackDiv);
+            
+            container.appendChild(card);
+
+            // Animación de aparición suave
+            setTimeout(() => {
+                card.classList.remove('opacity-0', 'translate-y-4');
+            }, 50);
+        }
+
+        function checkAIExercise(ex, exId, feedbackId) {
+            let userAnswer = "";
+            if (ex.type === 'radio') {
+                const selected = document.querySelector(`input[name="${exId}"]:checked`);
+                if (selected) userAnswer = selected.value.trim();
+            } else {
+                const inputEl = document.getElementById(`input-${exId}`);
+                if (inputEl) userAnswer = inputEl.value.trim();
+            }
+
+            if (!userAnswer) {
+                showFeedback(feedbackId, false, "Por favor, ingresa o selecciona una respuesta.");
+                return;
+            }
+
+            // Comparamos ignorando mayúsculas/minúsculas y espacios extra
+            const isCorrect = userAnswer.toLowerCase() === ex.correctAnswer.trim().toLowerCase();
+
+            if (isCorrect) {
+                showFeedback(feedbackId, true, ex.successMessage);
+            } else {
+                // Al fallar se le dice la pista de error y cuál era la correcta para que aprenda.
+                showFeedback(feedbackId, false, ex.errorMessage + " (La respuesta esperada era: " + ex.correctAnswer + ")");
             }
         }
     </script>
