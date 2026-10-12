@@ -1014,6 +1014,9 @@ FIN</pre>
             const errorMsg = document.getElementById('ai-error-msg');
             const container = document.getElementById('ai-exercises-container');
 
+            // Clave API por defecto (hardcoded)
+            const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
+
             // Bloquear botón y mostrar carga
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -1021,7 +1024,6 @@ FIN</pre>
             loader.classList.add('flex');
             errorMsg.classList.add('hidden');
 
-            const apiKey = "AQ.Ab8RN6IKT7Qj-880CodtNOssVZLcYLXN8EQEB2C_uz-CKFeZNg";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
             // Instrucciones para la IA pidiendo un JSON estricto
