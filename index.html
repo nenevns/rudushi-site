@@ -999,7 +999,8 @@ FIN</pre>
                         await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
                         continue;
                     }
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                    const errText = await res.text();
+                    throw new Error(`API Error ${res.status}: ${errText}`);
                 } catch (e) {
                     if (i === retries) throw e;
                     await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
@@ -1028,7 +1029,6 @@ FIN</pre>
             Actúa como un profesor de informática de Grado Medio (SMR).
             Genera 2 ejercicios prácticos interactivos sobre "Introducción a la Programación" (Algoritmos, Modelo Entrada-Proceso-Salida, Pseudocódigo básico, Abstracción).
             Los ejercicios deben ser variados. Usa un tono educativo y motivador.
-            Devuelve un JSON estrictamente con la siguiente estructura:
             `;
 
             const payload = {
@@ -1040,7 +1040,7 @@ FIN</pre>
                         items: {
                             type: "OBJECT",
                             properties: {
-                                type: { type: "STRING", description: "Tipo: 'radio' (selección única), 'input' (escribir texto/número)." },
+                                inputType: { type: "STRING", description: "Tipo: 'radio' (selección única), 'input' (escribir texto/número)." },
                                 title: { type: "STRING", description: "Título del ejercicio" },
                                 context: { type: "STRING", description: "Contexto o planteamiento" },
                                 options: { type: "ARRAY", items: { type: "STRING" }, description: "Opciones si es 'radio'. Vacio si es 'input'." },
@@ -1048,7 +1048,7 @@ FIN</pre>
                                 successMessage: { type: "STRING", description: "Mensaje si acierta, explicando el por qué." },
                                 errorMessage: { type: "STRING", description: "Mensaje si falla, dando una pequeña pista." }
                             },
-                            required: ["type", "title", "context", "options", "correctAnswer", "successMessage", "errorMessage"]
+                            required: ["inputType", "title", "context", "correctAnswer", "successMessage", "errorMessage"]
                         }
                     }
                 }
@@ -1063,22 +1063,26 @@ FIN</pre>
 
                 const result = await response.json();
                 
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
-                    const jsonText = result.candidates[0].content.parts[0].text;
-                    const exercises = JSON.parse(jsonText);
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (jsonText) {
+                    // Limpiar el texto en caso de que Gemini devuelva bloques de código markdown
+                    const cleanJsonText = jsonText.replace(/^```json\n?/, '').replace(/```$/, '').trim();
+                    const exercises = JSON.parse(cleanJsonText);
                     
                     // Renderizar cada ejercicio en la interfaz
                     exercises.forEach(ex => {
                         aiExerciseCounter++;
+                        if (ex.type && !ex.inputType) ex.inputType = ex.type; // Fallback por si la IA usa 'type'
                         renderAIExercise(ex, aiExerciseCounter, container);
                     });
                 } else {
-                    throw new Error("Formato de respuesta inesperado.");
+                    throw new Error("La respuesta de la IA vino vacía o con un formato inesperado.");
                 }
 
             } catch (error) {
                 console.error("Error generating exercises:", error);
-                errorMsg.textContent = "Hubo un error al contactar con Gemini. Por favor, inténtalo de nuevo en unos segundos.";
+                errorMsg.textContent = `Hubo un error al contactar con Gemini: ${error.message}`;
                 errorMsg.classList.remove('hidden');
             } finally {
                 // Restaurar botón y ocultar carga
@@ -1111,7 +1115,7 @@ FIN</pre>
             const inputArea = document.createElement('div');
             inputArea.className = "space-y-4 mb-4";
 
-            if (ex.type === 'radio' && ex.options && ex.options.length > 0) {
+            if (ex.inputType === 'radio' && ex.options && ex.options.length > 0) {
                 ex.options.forEach((opt, idx) => {
                     const label = document.createElement('label');
                     label.className = "block p-3 border border-gray-200 dark:border-gray-700 rounded hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer flex items-start gap-2";
@@ -1169,7 +1173,7 @@ FIN</pre>
 
         function checkAIExercise(ex, exId, feedbackId) {
             let userAnswer = "";
-            if (ex.type === 'radio') {
+            if (ex.inputType === 'radio') {
                 const selected = document.querySelector(`input[name="${exId}"]:checked`);
                 if (selected) userAnswer = selected.value.trim();
             } else {
