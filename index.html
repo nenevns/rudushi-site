@@ -37,19 +37,10 @@
         }
     </script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        #sidebar {
-            transition: transform 0.3s ease-in-out;
-        }
-        .content-section {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .content-section.active {
-            display: block;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        #sidebar { transition: transform 0.3s ease-in-out; }
+        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .content-section.active { display: block; }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -60,46 +51,17 @@
         p { margin-bottom: 1rem; line-height: 1.625; }
         ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
         li { margin-bottom: 0.5rem; }
-        .highlight-box {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-left-width: 4px;
-            border-radius: 0 0.375rem 0.375rem 0;
-        }
-        pre {
-            background-color: #1f2937;
-            color: #f3f4f6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-        }
-        th, td {
-            border: 1px solid;
-            padding: 0.75rem;
-            text-align: left;
-        }
+        .highlight-box { padding: 1rem; margin-bottom: 1.5rem; border-left-width: 4px; border-radius: 0 0.375rem 0.375rem 0; }
+        pre { background-color: #1f2937; color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; font-family: 'Courier New', Courier, monospace; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+        th, td { border: 1px solid; padding: 0.75rem; text-align: left; }
         #mobile-overlay { display: none; }
         #mobile-overlay.active { display: block; }
-        .tree-line {
-            position: absolute;
-            width: 2px;
-            background-color: #22c55e;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 0;
-        }
+        .tree-line { position: absolute; width: 2px; background-color: #22c55e; left: 50%; transform: translateX(-50%); z-index: 0; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
 
-    <!-- Mobile Overlay -->
     <div id="mobile-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 md:hidden transition-opacity" onclick="toggleSidebar()"></div>
 
     <!-- Sidebar Navigation -->
@@ -109,7 +71,7 @@
             <div class="flex items-center gap-2">
                 <button id="theme-toggle-sidebar" class="text-white hover:bg-green-700 dark:hover:bg-green-600 p-1.5 rounded transition" title="Cambiar Tema">
                     <svg id="theme-toggle-dark-icon-sidebar" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon-sidebar" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                    <svg id="theme-toggle-light-icon-sidebar" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
                 </button>
                 <button class="md:hidden text-white" onclick="toggleSidebar()">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -130,7 +92,6 @@
         </div>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
         <!-- Top Bar (Mobile) -->
         <header class="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between shadow-sm z-20">
@@ -138,7 +99,7 @@
             <div class="flex items-center gap-3">
                 <button id="theme-toggle-mobile" class="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 p-1 rounded focus:outline-none transition">
                     <svg id="theme-toggle-dark-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                    <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
                 </button>
                 <button onclick="toggleSidebar()" class="text-gray-600 dark:text-gray-300 focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
@@ -389,11 +350,11 @@ FIN</pre>
                     <div id="feedback-ex2" class="hidden p-3 rounded-lg mt-2 text-sm"></div>
                 </div>
 
-                <!-- Generador Infalible Local de 20 Ejercicios Nuevos -->
                 <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-8 rounded-2xl shadow-sm border border-green-200 dark:border-green-800 mb-6 text-center">
-                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-300 mb-2">Generador Dinámico de Ejercicios</h3>
-                    <p class="text-green-700 dark:text-green-400 mb-6 max-w-xl mx-auto">Pulsa el botón para generar instantáneamente un banco interactivo de <strong>20 nuevos ejercicios aleatorios</strong> con autocorrección inmediata sobre toda la UT1.</p>
-                    <button onclick="generar20EjerciciosLocal()" id="btn-generar" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform hover:scale-105">Generar 20 Nuevos Ejercicios</button>
+                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-300 mb-2">Generador Inteligente con IA (Securo & Oculto)</h3>
+                    <p class="text-green-700 dark:text-green-400 mb-6 max-w-xl mx-auto">Pulsa el botón para solicitar a través de una función segura en el servidor la creación instantánea de <strong>20 nuevos ejercicios dinámicos</strong> sobre toda la UT1 (sin exponer claves públicas).</p>
+                    <button onclick="generar20EjerciciosIA()" id="btn-generar" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform hover:scale-105">Generar 20 Nuevos Ejercicios con IA</button>
+                    <div id="error-ia" class="hidden mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"></div>
                 </div>
 
                 <div id="ejercicios-ia-container" class="space-y-4"></div>
@@ -479,100 +440,68 @@ FIN</pre>
             }
         }
 
-        // Local robust template bank for generating 20 random exercises instantaneously without external auth issues
-        const bancoPlantillasLocales = [
-            {
-                pregunta: "En el modelo Entrada-Proceso-Salida, ¿qué representan los datos introducidos por el teclado por un usuario?",
-                opciones: ["La Entrada (Input)", "El Proceso", "La Salida (Output)"],
-                correcta: 0,
-                explicacion: "Los datos que recibe el sistema al inicio son siempre la Entrada."
-            },
-            {
-                pregunta: "¿Cuál de los siguientes NO forma parte de los cuatro pilares del pensamiento computacional?",
-                opciones: ["Descomposición", "Cifrado Simétrico RSA", "Abstracción", "Algoritmos"],
-                correcta: 1,
-                explicacion: "Los cuatro pilares son Descomposición, Patrones, Abstracción y Algoritmos."
-            },
-            {
-                pregunta: "Si evaluamos en pseudocódigo la instrucción `SI ram >= 8 ENTONCES`, ¿qué estructura estamos utilizando?",
-                opciones: ["Secuencia lineal", "Decisión condicional", "Bucle infinito"],
-                correcta: 1,
-                explicacion: "Las estructuras SI...SINO corresponden a decisiones basadas en condiciones."
-            },
-            {
-                pregunta: "¿Qué figura geométrica se emplea en un diagrama de flujo estándar para representar una Decisión?",
-                opciones: ["Un rectángulo", "Un óvalo", "Un rombo", "Un paralelogramo"],
-                correcta: 2,
-                explicacion: "El rombo se reserva exclusivamente para preguntas o condiciones con dos bifurcaciones (Sí / No)."
-            },
-            {
-                pregunta: "¿Qué propiedad define que un algoritmo debe detenerse tras un número determinado de pasos?",
-                opciones: ["Debe ser finito", "Debe ser ambiguo", "Debe tener colores", "Debe usar Java"],
-                correcta: 0,
-                explicacion: "Un algoritmo nunca puede quedarse ejecutándose eternamente; la finitud es obligatoria."
-            },
-            {
-                pregunta: "Al diseñar una aplicación para gestionar incidencias de SMR, ¿qué significa 'descomponer' el problema?",
-                opciones: ["Borrar código que no funciona", "Dividir el gran problema en subproblemas funcionales más sencillos", "Apagar los servidores"],
-                correcta: 1,
-                explicacion: "Descomponer es trocear tareas grandes para manejarlas y probarlas individualmente por piezas."
-            },
-            {
-                pregunta: "En una traza de ejecución con datos de prueba, ¿por qué es vital probar los llamados 'valores límite'?",
-                opciones: ["Para gastar papel", "Porque detectan errores lógicos exactos en operadores como >= o <", "Para hacer el programa más lento"],
-                correcta: 1,
-                explicacion: "Los valores límite (como el umbral exacto de corte) descubren fallos en las condiciones."
-            },
-            {
-                pregunta: "¿Qué forma geométrica se utiliza en los diagramas de flujo para los bloques de Inicio y Fin?",
-                opciones: ["Un rectángulo", "Un óvalo", "Un rombo", "Un triángulo"],
-                correcta: 1,
-                explicacion: "Los óvalos delimitan gráficamente el punto inicial y final del diagrama."
-            },
-            {
-                pregunta: "Si en pseudocódigo escribimos `ESCRIBIR 'Error en red'`, ¿a qué fase del modelo E-P-S corresponde?",
-                opciones: ["Entrada", "Proceso", "Salida"],
-                correcta: 2,
-                explicacion: "Mostrar mensajes o resultados por pantalla es la Salida del sistema."
-            },
-            {
-                pregunta: "¿Qué es el pseudocódigo?",
-                opciones: ["Un código ejecutable directamente por el procesador a alta velocidad", "Un lenguaje intermedio estructurado entre el español y la programación real", "Un virus informático"],
-                correcta: 1,
-                explicacion: "El pseudocódigo nos ayuda a plasmar la lógica humana sin preocuparnos por la sintaxis estricta de Java."
-            }
-        ];
+        async function generar20EjerciciosIA() {
+            const btn = document.getElementById('btn-generar');
+            const container = document.getElementById('ejercicios-ia-container');
+            const errorMsg = document.getElementById('error-ia');
+            
+            btn.disabled = true;
+            btn.innerText = "Generando 20 ejercicios seguros con IA...";
+            errorMsg.classList.add('hidden');
+            container.innerHTML = '';
 
-        function generar20EjerciciosLocal() {
+            try {
+                // Llamamos a nuestra propia ruta serverless segura (ej: /api/generar-ejercicios en Vercel/Netlify)
+                // Esto oculta por completo la API Key en el servidor backend, evitando que GitHub la detecte o la bloquee.
+                const response = await fetch('/api/generar-ejercicios', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en el servidor backend (${response.status}). Asegúrate de haber desplegado la función serverless.`);
+                }
+
+                const ejercicios = await response.json();
+                renderizarEjerciciosIA(ejercicios);
+
+            } catch (error) {
+                console.error("Error:", error);
+                errorMsg.innerText = `Aviso: ${error.message}. (Nota: Si estás probando esto en local sin servidor backend configurado, recuerda desplegar en Vercel/Netlify para activar la API oculta).`;
+                errorMsg.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Generar 20 Nuevos Ejercicios con IA";
+            }
+        }
+
+        function renderizarEjerciciosIA(ejercicios) {
             const container = document.getElementById('ejercicios-ia-container');
             container.innerHTML = '';
             
-            // Generar 20 ejercicios mezclando y barajando el banco local robusto
-            for (let i = 1; i <= 20; i++) {
-                const base = bancoPlantillasLocales[Math.floor(Math.random() * bancoPlantillasLocales.length)];
-                
+            ejercicios.forEach((base, idx) => {
+                const num = idx + 1;
                 const card = document.createElement('div');
                 card.className = "bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-green-200 dark:border-green-700";
                 
-                let html = `<p class="font-bold text-gray-800 dark:text-white mb-3 text-base">${i}. ${base.pregunta}</p>`;
+                let html = `<p class="font-bold text-gray-800 dark:text-white mb-3 text-base">${num}. ${base.pregunta}</p>`;
                 html += `<div class="space-y-2 mb-4">`;
                 
                 base.opciones.forEach((op, index) => {
                     html += `
                         <label class="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                            <input type="radio" name="gen-ex-${i}" value="${index}" class="mr-2"> ${op}
+                            <input type="radio" name="gen-ex-${num}" value="${index}" class="mr-2"> ${op}
                         </label>`;
                 });
                 
                 html += `</div>`;
-                html += `<button onclick="comprobarEjercicioGenerado(${i}, ${base.correcta}, '${btoa(base.explicacion).replace(/'/g, "\\'")}')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">Comprobar</button>`;
-                html += `<div id="gen-fb-${i}" class="hidden mt-3 p-3 rounded-lg text-sm"></div>`;
+                html += `<button onclick="comprobarEjercicioGenerado(${num}, ${base.respuestaCorrecta}, '${btoa(encodeURIComponent(base.explicacion))}')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">Comprobar</button>`;
+                html += `<div id="gen-fb-${num}" class="hidden mt-3 p-3 rounded-lg text-sm"></div>`;
                 
                 card.innerHTML = html;
                 container.appendChild(card);
-            }
+            });
             
-            // Hacer scroll suave hacia los ejercicios generados
             container.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -587,7 +516,7 @@ FIN</pre>
                 return;
             }
 
-            const explicacion = atob(explicacionB64);
+            const explicacion = decodeURIComponent(atob(explicacionB64));
             if (parseInt(seleccionado.value) === correctaReal) {
                 fb.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/50', 'dark:text-green-200');
                 fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${explicacion}`;
