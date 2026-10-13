@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introducción a la Programación - SMR</title>
+    <title>Vivi's Hub - Centro de Estudio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,520 +11,134 @@
             theme: {
                 extend: {
                     colors: {
-                        green: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            300: '#86efac',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            800: '#166534',
-                            900: '#14532d',
+                        primary: { 50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4', 300: '#5eead4', 400: '#2dd4bf', 500: '#14b8a6', 600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a' },
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
             }
         }
     </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-500 min-h-screen relative overflow-x-hidden">
+    
+    <!-- Background Animated Blobs -->
+    <div class="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob dark:opacity-20"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-emerald-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 dark:opacity-20"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000 dark:opacity-20"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+        <!-- Navegación -->
+        <nav class="w-full p-6 flex justify-between items-center max-w-6xl mx-auto">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">V</div>
+                <span class="font-bold text-xl tracking-tight">Vivi's Hub</span>
+            </div>
+            <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all text-gray-600 dark:text-gray-300">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <main class="flex-1 w-full max-w-6xl mx-auto px-6 py-12 flex flex-col items-center justify-center">
+            <header class="text-center mb-16 opacity-0 animate-fade-in-up" style="animation-delay: 0.1s;">
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-emerald-500 dark:from-primary-400 dark:to-emerald-300">Hola, soy Vivi</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Bienvenido a mi centro personal de estudio. Aquí guardaré y organizaré todas las aplicaciones web, libros interactivos y herramientas de repaso para mi grado.</p>
+            </header>
+
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tarjeta: UT1 SMR -->
+                <a href="smr_ut1.html" class="group glass-card rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 opacity-0 animate-fade-in-up flex flex-col h-full cursor-pointer" style="animation-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <div class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-800 text-xs font-semibold rounded-full w-max mb-3 text-gray-700 dark:text-gray-300">SMR - CVOPM190</div>
+                    <h3 class="text-xl font-bold mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">Libro UT1: Intro. Programación</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm flex-1 mb-4">Pensamiento computacional, modelo E-P-S, descomposición, algoritmos y trazas.</p>
+                    <div class="flex items-center text-primary-600 dark:text-primary-400 text-sm font-semibold">
+                        Abrir módulo <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </div>
+                </a>
+
+                <!-- Tarjeta: Próximamente 1 -->
+                <div class="glass-card rounded-2xl p-6 shadow-sm border border-dashed border-gray-300 dark:border-gray-700 opacity-0 animate-fade-in-up flex flex-col items-center justify-center text-center h-full min-h-[250px]" style="animation-delay: 0.3s;">
+                    <div class="w-12 h-12 bg-gray-100 dark:bg-gray-800 text-gray-400 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-1 text-gray-500">Nuevo Módulo</h3>
+                    <p class="text-gray-400 text-sm">Próximas unidades de SMR se añadirán aquí.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center p-6 text-sm text-gray-500 dark:text-gray-400">
+            Creado para Vivi &middot; 2026
+        </footer>
+    </div>
+
     <script>
-        // Check initial theme preferences
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+        function updateThemeUI() {
+            if (document.documentElement.classList.contains('dark')) {
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+            } else {
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        // Init theme
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        #sidebar { transition: transform 0.3s ease-in-out; }
-        .content-section { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .content-section.active { display: block; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h1 { font-size: 2.25rem; line-height: 2.5rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; font-weight: 700; border-bottom: 2px solid; }
-        h2 { font-size: 1.5rem; line-height: 2rem; margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; }
-        h3 { font-size: 1.25rem; line-height: 1.75rem; margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 700; }
-        p { margin-bottom: 1rem; line-height: 1.625; }
-        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
-        li { margin-bottom: 0.5rem; }
-        .highlight-box { padding: 1rem; margin-bottom: 1.5rem; border-left-width: 4px; border-radius: 0 0.375rem 0.375rem 0; }
-        pre { background-color: #1f2937; color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1.5rem; font-family: 'Courier New', Courier, monospace; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
-        th, td { border: 1px solid; padding: 0.75rem; text-align: left; }
-        #mobile-overlay { display: none; }
-        #mobile-overlay.active { display: block; }
-        .tree-line { position: absolute; width: 2px; background-color: #22c55e; left: 50%; transform: translateX(-50%); z-index: 0; }
-    </style>
-</head>
-<body class="flex h-screen overflow-hidden bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
+        updateThemeUI();
 
-    <div id="mobile-overlay" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 md:hidden transition-opacity" onclick="toggleSidebar()"></div>
-
-    <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-30 w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 flex flex-col shadow-lg">
-        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-green-600 dark:bg-green-700 text-white">
-            <h2 class="text-xl font-bold m-0">Libro Temario SMR</h2>
-            <div class="flex items-center gap-2">
-                <button id="theme-toggle-sidebar" class="text-white hover:bg-green-700 dark:hover:bg-green-600 p-1.5 rounded transition" title="Cambiar Tema">
-                    <svg id="theme-toggle-dark-icon-sidebar" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon-sidebar" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-                </button>
-                <button class="md:hidden text-white" onclick="toggleSidebar()">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-        </div>
-        <div class="p-4 overflow-y-auto flex-1 space-y-1">
-            <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Módulo: CVOPM190</div>
-            <ul class="space-y-1">
-                <li><button onclick="showSection('intro')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Portada e Índice</button></li>
-                <li><button onclick="showSection('tema1')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Tema 1: ¿Qué es programar?</button></li>
-                <li><button onclick="showSection('tema2')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Tema 2: Patrones y Abstracción</button></li>
-                <li><button onclick="showSection('tema3')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Tema 3: Algoritmos y Diagramas</button></li>
-                <li><button onclick="showSection('resumen')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Resumen Final</button></li>
-                <li><button onclick="showSection('esquema')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium">Esquema Estructural</button></li>
-                <li><button onclick="showSection('ejercicios')" class="nav-btn w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-green-600 dark:text-green-400 transition font-semibold border border-transparent hover:border-green-200 dark:hover:border-green-800">Ejercicios Interactivos</button></li>
-            </ul>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex flex-col h-full relative z-10 overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
-        <!-- Top Bar (Mobile) -->
-        <header class="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between shadow-sm z-20">
-            <h1 class="text-lg font-bold text-gray-800 dark:text-white m-0 border-none pb-0">Intro. Programación</h1>
-            <div class="flex items-center gap-3">
-                <button id="theme-toggle-mobile" class="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 p-1 rounded focus:outline-none transition">
-                    <svg id="theme-toggle-dark-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon-mobile" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-                </button>
-                <button onclick="toggleSidebar()" class="text-gray-600 dark:text-gray-300 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-            </div>
-        </header>
-
-        <!-- Scrollable Book Pages Container -->
-        <div class="flex-1 overflow-y-auto p-6 md:p-12 lg:px-24 xl:px-48" id="content-container">
-            
-            <!-- PORTADA -->
-            <section id="intro" class="content-section active max-w-4xl mx-auto">
-                <div class="text-center mb-10">
-                    <span class="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Manual Académico Oficial</span>
-                    <h1 class="text-4xl font-extrabold text-green-700 dark:text-green-400 border-none mt-3 mb-2">Introducción a la Programación</h1>
-                    <p class="text-xl text-gray-600 dark:text-gray-400 font-medium">Grado Medio de Sistemas Microinformáticos y Redes (SMR)</p>
-                </div>
-                
-                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-                    <p class="mb-2"><strong>Módulo Profesional:</strong> CVOPM190 - Introducción a la Programación 2.0</p>
-                    <p class="mb-6"><strong>Unidad de Trabajo 1 (UT1):</strong> Fundamentos del Pensamiento Computacional y Algoritmia</p>
-                    
-                    <h2 class="mt-6 mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">Índice del Libro</h2>
-                    <ol class="list-decimal pl-6 space-y-3 text-lg font-medium">
-                        <li><a href="#" onclick="showSection('tema1'); return false;" class="text-green-600 dark:text-green-400 hover:underline">Tema 1: ¿Qué significa programar? (El modelo E-P-S)</a></li>
-                        <li><a href="#" onclick="showSection('tema2'); return false;" class="text-green-600 dark:text-green-400 hover:underline">Tema 2: Descomposición, Patrones y Abstracción</a></li>
-                        <li><a href="#" onclick="showSection('tema3'); return false;" class="text-green-600 dark:text-green-400 hover:underline">Tema 3: Algoritmos, Pseudocódigo y Diagramas de Flujo</a></li>
-                        <li><a href="#" onclick="showSection('resumen'); return false;" class="text-green-600 dark:text-green-400 hover:underline">Resumen Final: Puntos Clave de Estudio</a></li>
-                        <li><a href="#" onclick="showSection('esquema'); return false;" class="text-green-600 dark:text-green-400 hover:underline">Esquema Estructural Global</a></li>
-                        <li><a href="#" onclick="showSection('ejercicios'); return false;" class="text-green-600 dark:text-green-400 hover:underline font-semibold">Ejercicios Prácticos Interactivos (Autoevaluación)</a></li>
-                    </ol>
-                </div>
-                
-                <div class="mt-8 flex justify-end">
-                    <button onclick="showSection('tema1')" class="bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-green-700 transition flex items-center gap-2">Comenzar Tema 1 &rarr;</button>
-                </div>
-            </section>
-
-            <!-- TEMA 1 -->
-            <section id="tema1" class="content-section max-w-4xl mx-auto">
-                <h1 class="border-gray-200 dark:border-gray-700 text-green-700 dark:text-green-400">Tema 1: ¿Qué significa programar?</h1>
-                <p class="text-lg">Cuando empezamos en SMR, muchos pensamos que programar consiste exclusivamente en escribir líneas de código extrañas en pantallas oscuras. ¡Nada más lejos de la realidad! En nuestro día a día profesional, programar es, ante todo, <strong>automatizar tareas repetitivas y resolver problemas técnicos de manera lógica</strong>.</p>
-                
-                <div class="highlight-box bg-green-50 border-green-500 dark:bg-green-900/30 dark:border-green-400">
-                    <strong class="text-green-800 dark:text-green-300">🍳 La Analogía de la Cocina:</strong>
-                    <ul class="list-disc pl-5 mt-2 space-y-1">
-                        <li><strong>El Problema:</strong> Tengo hambre y quiero cenar una tortilla de patatas.</li>
-                        <li><strong>El Algoritmo:</strong> La receta paso a paso escrita en un papel en castellano claro.</li>
-                        <li><strong>El Programa:</strong> La misma receta adaptada digitalmente a las órdenes estrictas que entiende un robot de cocina.</li>
-                    </ul>
-                </div>
-
-                <h2>1.1. Problema, Algoritmo, Programa y Lenguaje</h2>
-                <p>Es muy importante no confundir estos cuatro conceptos clave:</p>
-                <ul class="list-disc pl-6 space-y-2">
-                    <li><strong>Problema:</strong> La necesidad real a resolver (ej. <em>"Necesito comprobar qué ordenadores del aula tienen menos de 8 GB de RAM"</em>).</li>
-                    <li><strong>Algoritmo:</strong> La secuencia ordenada de pasos lógicos para solucionarlo (entendible por personas).</li>
-                    <li><strong>Programa:</strong> El algoritmo traducido a un lenguaje informático específico.</li>
-                    <li><strong>Lenguaje de Programación:</strong> El vocabulario y sintaxis permitidos (en nuestro ciclo utilizaremos <strong>Java</strong>).</li>
-                </ul>
-
-                <h2>1.2. El Modelo Entrada - Proceso - Salida (E-P-S)</h2>
-                <p>Casi cualquier programa informático funciona bajo este esquema mental imbatible:</p>
-                <div class="grid md:grid-cols-3 gap-4 my-6">
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-5 rounded-xl text-center shadow-sm">
-                        <div class="text-3xl mb-2">📥</div>
-                        <h4 class="font-bold text-blue-800 dark:text-blue-300">1. ENTRADA (Input)</h4>
-                        <p class="text-sm mt-2 mb-0">Los datos que el sistema recibe del exterior (ej. Leer la RAM de un PC: 4 GB).</p>
-                    </div>
-                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 p-5 rounded-xl text-center shadow-sm">
-                        <div class="text-3xl mb-2">⚙️</div>
-                        <h4 class="font-bold text-yellow-800 dark:text-yellow-300">2. PROCESO (Process)</h4>
-                        <p class="text-sm mt-2 mb-0">Las operaciones matemáticas o comparaciones lógicas (ej. ¿Es la RAM menor que 8?).</p>
-                    </div>
-                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-5 rounded-xl text-center shadow-sm">
-                        <div class="text-3xl mb-2">📤</div>
-                        <h4 class="font-bold text-green-800 dark:text-green-300">3. SALIDA (Output)</h4>
-                        <p class="text-sm mt-2 mb-0">El resultado devuelto al usuario (ej. Mostrar en pantalla: "Ampliación recomendada").</p>
-                    </div>
-                </div>
-
-                <div class="mt-10 flex justify-between">
-                    <button onclick="showSection('intro')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Volver a Portada</button>
-                    <button onclick="showSection('tema2')" class="bg-green-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow hover:bg-green-700 transition">Tema 2: Patrones y Abstracción &rarr;</button>
-                </div>
-            </section>
-
-            <!-- TEMA 2 -->
-            <section id="tema2" class="content-section max-w-4xl mx-auto">
-                <h1 class="border-gray-200 dark:border-gray-700 text-green-700 dark:text-green-400">Tema 2: Descomposición, Patrones y Abstracción</h1>
-                <p class="text-lg">Para resolver problemas informáticos complejos sin volverte loco, utilizamos el <strong>Pensamiento Computacional</strong>, apoyándonos en tres pilares fundamentales:</p>
-
-                <h2>2.1. Descomposición: Divide y vencerás</h2>
-                <p>Intentar programar una aplicación entera de golpe es un error seguro. <strong>Descomponer</strong> consiste en trocear un problema gigantesco (ej. construir el software <em>SMR Manager</em>) en subproblemas pequeños que podamos programar y probar por separado con total comodidad.</p>
-                <ul class="list-disc pl-6 space-y-1 mb-6">
-                    <li>Inventario de equipos (altas y consultas).</li>
-                    <li>Gestión y registro de incidencias técnicas.</li>
-                    <li>Validación de parámetros de red (IPs y MACs).</li>
-                </ul>
-
-                <h2>2.2. Reconocimiento de Patrones</h2>
-                <p>Un patrón es una estructura común que se repite en situaciones muy diferentes. Al detectarlos, no necesitamos reinventar la rueda; reutilizamos la misma lógica con diferentes datos.</p>
-                <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 my-4 text-sm font-mono">
-                    <p class="mb-1"><strong>Patrón Común (Ej. Registrar Equipo / Registrar Incidencia):</strong></p>
-                    <p class="text-green-600 dark:text-green-400 m-0">Pedir Datos &rarr; Validar Formato &rarr; Almacenar en Base de Datos &rarr; Confirmar Éxito</p>
-                </div>
-
-                <h2>2.3. Abstracción: Quedarse con lo que importa</h2>
-                <p>Abstraer es el arte de <strong>ignorar el ruido irrelevante</strong> y conservar únicamente la información estrictamente necesaria para resolver nuestro objetivo actual.</p>
-                <div class="highlight-box bg-yellow-50 border-yellow-500 dark:bg-yellow-900/30 dark:border-yellow-400">
-                    <strong class="text-yellow-800 dark:text-yellow-300">🗺️ Ejemplo del Mapa de Metro:</strong>
-                    <p class="mt-2 mb-0">Un plano de metro no dibuja las alcantarillas, las piedras ni las curvas exactas de las calles. Solo muestra las estaciones y las líneas conectadas porque es lo único que te importa para viajar. En programación ocurre exactamente igual con nuestros datos.</p>
-                </div>
-
-                <div class="mt-10 flex justify-between">
-                    <button onclick="showSection('tema1')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Tema 1</button>
-                    <button onclick="showSection('tema3')" class="bg-green-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow hover:bg-green-700 transition">Tema 3: Algoritmos y Diagramas &rarr;</button>
-                </div>
-            </section>
-
-            <!-- TEMA 3 -->
-            <section id="tema3" class="content-section max-w-4xl mx-auto">
-                <h1 class="border-gray-200 dark:border-gray-700 text-green-700 dark:text-green-400">Tema 3: Algoritmos, Pseudocódigo y Diagramas de Flujo</h1>
-                <p class="text-lg">Antes de escribir código real en Java, necesitamos diseñar la hoja de ruta mediante un <strong>algoritmo</strong> riguroso y ordenado.</p>
-
-                <h2>3.1. Pseudocódigo: El idioma intermedio</h2>
-                <p>El lenguaje natural (español cotidiano) es demasiado ambiguo (¿qué significa exactamente <em>"si tiene poca RAM, avisa"</em>?). El pseudocódigo nos ofrece un formato estructurado y limpio que elimina ambigüedades sin exigir la sintaxis estricta de Java.</p>
-                <pre>INICIO
-  LEER ram
-  SI ram >= 8 ENTONCES
-    ESCRIBIR "RAM suficiente"
-  SINO
-    ESCRIBIR "Ampliación recomendada"
-  FIN_SI
-FIN</pre>
-
-                <h2>3.2. Las Tres Estructuras Fundamentales</h2>
-                <p>Cualquier software del mundo se construye combinando únicamente estas tres estructuras de control:</p>
-                <ol class="list-decimal pl-6 space-y-2 mb-6">
-                    <li><strong>Secuencia:</strong> Instrucciones que se ejecutan linealmente una detrás de otra.</li>
-                    <li><strong>Decisión (Alternativa):</strong> Bifurcaciones condicionales mediante estructuras tipo `SI ... SINO`.</li>
-                    <li><strong>Repetición (Bucles):</strong> Instrucciones que se repiten varias veces mediante `MIENTRAS` o `PARA`.</li>
-                </ol>
-
-                <h2>3.3. Diagramas de Flujo y Trazas</h2>
-                <p>Los diagramas de flujo representan gráficamente los algoritmos utilizando formas normalizadas (óvalos de inicio/fin, rectángulos de proceso, rombos de decisión y paralelogramos de E/S). Por su parte, realizar una <strong>traza</strong> consiste en simular manualmente en una tabla el comportamiento del algoritmo con datos de prueba (incluyendo siempre <em>casos límite</em>) para comprobar si funciona antes de pasarlo al ordenador.</p>
-
-                <div class="mt-10 flex justify-between">
-                    <button onclick="showSection('tema2')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Tema 2</button>
-                    <button onclick="showSection('resumen')" class="bg-green-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow hover:bg-green-700 transition">Resumen Final &rarr;</button>
-                </div>
-            </section>
-
-            <!-- RESUMEN FINAL -->
-            <section id="resumen" class="content-section max-w-4xl mx-auto">
-                <h1 class="border-gray-200 dark:border-gray-700 text-green-700 dark:text-green-400">Resumen Final: Puntos Clave de Estudio</h1>
-                <p class="text-lg mb-6">Repasa rápidamente los conceptos imprescindibles para superar con éxito la evaluación de la UT1:</p>
-                
-                <div class="space-y-4">
-                    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border-l-4 border-green-500 border border-gray-200 dark:border-gray-700">
-                        <h3 class="m-0 text-green-700 dark:text-green-400 border-none">1. Programar es Resolver</h3>
-                        <p class="m-0 text-gray-600 dark:text-gray-300">El proceso lógico empieza comprendiendo la necesidad y diseñando la solución en papel antes de abrir el entorno de desarrollo en Java.</p>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border-l-4 border-green-500 border border-gray-200 dark:border-gray-700">
-                        <h3 class="m-0 text-green-700 dark:text-green-400 border-none">2. Los 4 Pilares del Pensamiento Computacional</h3>
-                        <p class="m-0 text-gray-600 dark:text-gray-300"><strong>Descomposición</strong> (trocear problemas), <strong>Reconocimiento de Patrones</strong> (reutilizar estructuras), <strong>Abstracción</strong> (filtrar lo irrelevante) y <strong>Algoritmos</strong> (pasos ordenados).</p>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border-l-4 border-green-500 border border-gray-200 dark:border-gray-700">
-                        <h3 class="m-0 text-green-700 dark:text-green-400 border-none">3. El Modelo E-P-S</h3>
-                        <p class="m-0 text-gray-600 dark:text-gray-300">Toda arquitectura informática procesa <strong>Entradas</strong> (datos), realiza un <strong>Proceso</strong> (condiciones y cálculos) y produce una <strong>Salida</strong> (resultados).</p>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border-l-4 border-green-500 border border-gray-200 dark:border-gray-700">
-                        <h3 class="m-0 text-green-700 dark:text-green-400 border-none">4. Diseño Lógico y Verificación</h3>
-                        <p class="m-0 text-gray-600 dark:text-gray-300">El uso de <strong>Pseudocódigo</strong>, <strong>Diagramas de Flujo</strong> y <strong>Trazas con valores límite</strong> garantiza que el algoritmo no tenga fallos lógicos ocultos.</p>
-                    </div>
-                </div>
-
-                <div class="mt-10 flex justify-between">
-                    <button onclick="showSection('tema3')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Tema 3</button>
-                    <button onclick="showSection('esquema')" class="bg-green-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow hover:bg-green-700 transition">Esquema General &rarr;</button>
-                </div>
-            </section>
-
-            <!-- ESQUEMA ESTRUCTURAL -->
-            <section id="esquema" class="content-section max-w-4xl mx-auto">
-                <h1 class="border-gray-200 dark:border-gray-700 text-green-700 dark:text-green-400">Esquema Estructural Global</h1>
-                <p class="text-lg mb-6">Mapa mental sintético de la Unidad de Trabajo 1:</p>
-                
-                <div class="relative max-w-xl mx-auto py-8">
-                    <div class="tree-line top-0 bottom-0"></div>
-                    <div class="relative z-10 bg-green-600 text-white rounded-xl p-5 text-center mb-8 shadow-lg font-bold text-lg">
-                        PENSAMIENTO COMPUTACIONAL & ALGORITMIA
-                    </div>
-                    <div class="relative z-10 grid grid-cols-2 gap-4 text-center">
-                        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 rounded-xl p-4 shadow font-semibold">1. Descomposición<span class="block text-xs font-normal text-gray-500 mt-1">Subproblemas funcionales</span></div>
-                        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 rounded-xl p-4 shadow font-semibold">2. Patrones<span class="block text-xs font-normal text-gray-500 mt-1">Reutilización de estructuras</span></div>
-                        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 rounded-xl p-4 shadow font-semibold">3. Abstracción<span class="block text-xs font-normal text-gray-500 mt-1">Selección de datos clave</span></div>
-                        <div class="bg-white dark:bg-gray-800 border-2 border-green-500 rounded-xl p-4 shadow font-semibold">4. Algoritmos (E-P-S)<span class="block text-xs font-normal text-gray-500 mt-1">Pseudocódigo y Trazas</span></div>
-                    </div>
-                </div>
-
-                <div class="mt-10 flex justify-between">
-                    <button onclick="showSection('resumen')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Resumen Final</button>
-                    <button onclick="showSection('ejercicios')" class="bg-green-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow hover:bg-green-700 transition">Ejercicios Interactivos &rarr;</button>
-                </div>
-            </section>
-
-            <!-- EJERCICIOS INTERACTIVOS -->
-            <section id="ejercicios" class="content-section max-w-4xl mx-auto">
-                <h1 class="text-green-700 dark:text-green-400 border-gray-200 dark:border-gray-700">Ejercicios Prácticos Interactivos</h1>
-                <p class="text-lg mb-6">Pon a prueba tu aprendizaje con actividades prácticas autocorrectivas basadas en los boletines oficiales de clase (A01, A02 y A03).</p>
-
-                <!-- Ejercicio 1 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
-                    <h3 class="m-0 text-gray-800 dark:text-white border-none mb-3">1. Identificación del Modelo E-P-S</h3>
-                    <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">Caso: Comprobar si el disco duro de un equipo tiene menos de 10 GB libres para mostrar una advertencia en pantalla.</p>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-sm font-bold mb-1 text-gray-700 dark:text-gray-300">¿Qué elemento representa la operación de comparar el espacio libre con 10 GB?</label>
-                            <select id="ex1-select" class="w-full p-2.5 border rounded-lg bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-800 dark:text-white text-sm">
-                                <option value="">-- Selecciona una opción --</option>
-                                <option value="entrada">La Entrada (Input)</option>
-                                <option value="proceso">El Proceso (Cálculo / Condición)</option>
-                                <option value="salida">La Salida (Output)</option>
-                            </select>
-                        </div>
-                        <button onclick="checkEx1()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">Comprobar Respuesta</button>
-                        <div id="feedback-ex1" class="hidden p-3 rounded-lg mt-2 text-sm"></div>
-                    </div>
-                </div>
-
-                <!-- Ejercicio 2 -->
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
-                    <h3 class="m-0 text-gray-800 dark:text-white border-none mb-3">2. Pilares del Pensamiento Computacional (Abstracción)</h3>
-                    <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">Para crear una base de datos de inventario técnico en SMR, ¿cuál de los siguientes datos es <strong>IRRELEVANTE</strong> y debe ser descartado mediante abstracción?</p>
-                    <div class="space-y-2 mb-3">
-                        <label class="block p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                            <input type="radio" name="ex2" value="0" class="mr-2"> La dirección IP asignada al equipo.
-                        </label>
-                        <label class="block p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                            <input type="radio" name="ex2" value="1" class="mr-2"> La cantidad de memoria RAM instalada.
-                        </label>
-                        <label class="block p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                            <input type="radio" name="ex2" value="2" class="mr-2"> El color estético de la carcasa de la torre.
-                        </label>
-                    </div>
-                    <button onclick="checkEx2()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">Comprobar Respuesta</button>
-                    <div id="feedback-ex2" class="hidden p-3 rounded-lg mt-2 text-sm"></div>
-                </div>
-
-                <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-8 rounded-2xl shadow-sm border border-green-200 dark:border-green-800 mb-6 text-center">
-                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-300 mb-2">Generador Inteligente con IA (Securo & Oculto)</h3>
-                    <p class="text-green-700 dark:text-green-400 mb-6 max-w-xl mx-auto">Pulsa el botón para solicitar a través de una función segura en el servidor la creación instantánea de <strong>20 nuevos ejercicios dinámicos</strong> sobre toda la UT1 (sin exponer claves públicas).</p>
-                    <button onclick="generar20EjerciciosIA()" id="btn-generar" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition transform hover:scale-105">Generar 20 Nuevos Ejercicios con IA</button>
-                    <div id="error-ia" class="hidden mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm"></div>
-                </div>
-
-                <div id="ejercicios-ia-container" class="space-y-4"></div>
-
-                <div class="mt-10">
-                    <button onclick="showSection('esquema')" class="text-green-600 dark:text-green-400 hover:underline font-medium">&larr; Volver al Esquema</button>
-                </div>
-            </section>
-
-            <div class="h-24"></div>
-        </div>
-    </main>
-
-    <script>
-        // Navigation between book sections
-        function showSection(sectionId) {
-            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            document.getElementById('content-container').scrollTop = 0;
-            if (window.innerWidth < 768) toggleSidebar();
-        }
-
-        // Sidebar toggle for mobile devices
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('active');
-        }
-
-        // Theme toggler logic
-        function toggleTheme() {
+        themeToggleBtn.addEventListener('click', function() {
             document.documentElement.classList.toggle('dark');
-            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-            updateIcons();
-        }
-
-        function updateIcons() {
-            const isDark = document.documentElement.classList.contains('dark');
-            document.getElementById('theme-toggle-dark-icon-sidebar').classList.toggle('hidden', isDark);
-            document.getElementById('theme-toggle-light-icon-sidebar').classList.toggle('hidden', !isDark);
-            document.getElementById('theme-toggle-dark-icon-mobile').classList.toggle('hidden', isDark);
-            document.getElementById('theme-toggle-light-icon-mobile').classList.toggle('hidden', !isDark);
-        }
-
-        document.getElementById('theme-toggle-sidebar').addEventListener('click', toggleTheme);
-        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
-
-        window.onload = () => { updateIcons(); };
-
-        // Static Exercise 1 Validation
-        function checkEx1() {
-            const val = document.getElementById('ex1-select').value;
-            const fb = document.getElementById('feedback-ex1');
-            fb.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'text-green-800', 'text-red-800', 'dark:bg-green-900/50', 'dark:bg-red-900/50', 'dark:text-green-200', 'dark:text-red-200');
-            if (val === 'proceso') {
-                fb.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/50', 'dark:text-green-200');
-                fb.innerHTML = '<strong>¡Correcto!</strong> Comparar datos y evaluar condiciones pertenece a la fase central de Proceso.';
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
             } else {
-                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/50', 'dark:text-red-200');
-                fb.innerHTML = '<strong>Incorrecto.</strong> Recuerda que la entrada recibe los datos brutos y la salida muestra los resultados. La comparación es un cálculo lógico (Proceso).';
+                localStorage.setItem('color-theme', 'light');
             }
-        }
-
-        // Static Exercise 2 Validation
-        function checkEx2() {
-            const selected = document.querySelector('input[name="ex2"]:checked');
-            const fb = document.getElementById('feedback-ex2');
-            fb.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'text-green-800', 'text-red-800', 'dark:bg-green-900/50', 'dark:bg-red-900/50', 'dark:text-green-200', 'dark:text-red-200');
-            
-            if (!selected) {
-                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/50', 'dark:text-red-200');
-                fb.innerHTML = '⚠️ Por favor, selecciona una opción antes de comprobar.';
-                return;
-            }
-
-            if (selected.value === '2') {
-                fb.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/50', 'dark:text-green-200');
-                fb.innerHTML = '<strong>¡Correcto!</strong> Mediante abstracción eliminamos detalles puramente estéticos (como el color de la caja) que no afectan al inventario técnico.';
-            } else {
-                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/50', 'dark:text-red-200');
-                fb.innerHTML = '<strong>Incorrecto.</strong> Tanto la IP como la RAM son datos técnicos vitales para el inventario y no se pueden abstraer.';
-            }
-        }
-
-        async function generar20EjerciciosIA() {
-            const btn = document.getElementById('btn-generar');
-            const container = document.getElementById('ejercicios-ia-container');
-            const errorMsg = document.getElementById('error-ia');
-            
-            btn.disabled = true;
-            btn.innerText = "Generando 20 ejercicios seguros con IA...";
-            errorMsg.classList.add('hidden');
-            container.innerHTML = '';
-
-            try {
-                // Llamamos a nuestra propia ruta serverless segura (ej: /api/generar-ejercicios en Vercel/Netlify)
-                // Esto oculta por completo la API Key en el servidor backend, evitando que GitHub la detecte o la bloquee.
-                const response = await fetch('/api/generar-ejercicios', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error en el servidor backend (${response.status}). Asegúrate de haber desplegado la función serverless.`);
-                }
-
-                const ejercicios = await response.json();
-                renderizarEjerciciosIA(ejercicios);
-
-            } catch (error) {
-                console.error("Error:", error);
-                errorMsg.innerText = `Aviso: ${error.message}. (Nota: Si estás probando esto en local sin servidor backend configurado, recuerda desplegar en Vercel/Netlify para activar la API oculta).`;
-                errorMsg.classList.remove('hidden');
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Generar 20 Nuevos Ejercicios con IA";
-            }
-        }
-
-        function renderizarEjerciciosIA(ejercicios) {
-            const container = document.getElementById('ejercicios-ia-container');
-            container.innerHTML = '';
-            
-            ejercicios.forEach((base, idx) => {
-                const num = idx + 1;
-                const card = document.createElement('div');
-                card.className = "bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-green-200 dark:border-green-700";
-                
-                let html = `<p class="font-bold text-gray-800 dark:text-white mb-3 text-base">${num}. ${base.pregunta}</p>`;
-                html += `<div class="space-y-2 mb-4">`;
-                
-                base.opciones.forEach((op, index) => {
-                    html += `
-                        <label class="block p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm">
-                            <input type="radio" name="gen-ex-${num}" value="${index}" class="mr-2"> ${op}
-                        </label>`;
-                });
-                
-                html += `</div>`;
-                html += `<button onclick="comprobarEjercicioGenerado(${num}, ${base.respuestaCorrecta}, '${btoa(encodeURIComponent(base.explicacion))}')" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm transition">Comprobar</button>`;
-                html += `<div id="gen-fb-${num}" class="hidden mt-3 p-3 rounded-lg text-sm"></div>`;
-                
-                card.innerHTML = html;
-                container.appendChild(card);
-            });
-            
-            container.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function comprobarEjercicioGenerado(num, correctaReal, explicacionB64) {
-            const seleccionado = document.querySelector(`input[name="gen-ex-${num}"]:checked`);
-            const fb = document.getElementById(`gen-fb-${num}`);
-            fb.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'text-green-800', 'text-red-800', 'dark:bg-green-900/50', 'dark:bg-red-900/50', 'dark:text-green-200', 'dark:text-red-200');
-            
-            if (!seleccionado) {
-                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/50', 'dark:text-red-200');
-                fb.innerHTML = '⚠️ Por favor, selecciona una opción antes de comprobar.';
-                return;
-            }
-
-            const explicacion = decodeURIComponent(atob(explicacionB64));
-            if (parseInt(seleccionado.value) === correctaReal) {
-                fb.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/50', 'dark:text-green-200');
-                fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${explicacion}`;
-            } else {
-                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/50', 'dark:text-red-200');
-                fb.innerHTML = `❌ <strong>Incorrecto.</strong> ${explicacion}`;
-            }
-        }
+            updateThemeUI();
+        });
     </script>
 </body>
 </html>
