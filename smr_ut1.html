@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UT1: Programación - Vivi's Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        green: { 50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac', 400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 800: '#166534', 900: '#14532d' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Typography overrides for the book */
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.025em; border-bottom: 3px solid #22c55e; padding-bottom: 0.5rem; }
+        h2 { font-size: 1.75rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; color: #166534; }
+        .dark h2 { color: #4ade80; }
+        p { margin-bottom: 1.25rem; line-height: 1.75; font-size: 1.1rem; }
+        ul, ol { margin-bottom: 1.5rem; padding-left: 1.5rem; font-size: 1.1rem; }
+        li { margin-bottom: 0.5rem; }
+        
+        pre { background: #0f172a; color: #e2e8f0; padding: 1.25rem; border-radius: 0.75rem; overflow-x: auto; font-family: monospace; font-size: 1rem; border-left: 4px solid #22c55e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .pseudocode-word { color: #fbbf24; font-weight: bold; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        /* Progress bar */
+        #progress-bar { transition: width 0.3s ease; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300 selection:bg-green-200 dark:selection:bg-green-900">
+
+    <!-- Navbar Superior con Barra de Progreso -->
+    <header class="fixed top-0 w-full z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between px-4 h-16 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 lg:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">V</div>
+                    <span class="font-bold hidden sm:block">Vivi's Hub</span>
+                </a>
+                <div class="h-6 w-px bg-gray-300 dark:bg-gray-700 mx-2 hidden sm:block"></div>
+                <span class="font-semibold text-green-700 dark:text-green-400 text-sm sm:text-base truncate">UT1: Introducción a la Programación</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <button onclick="openSettings()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 transition-colors" title="Ajustes de IA">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </button>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 transition-colors">
+                    <svg id="theme-icon-dark" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-icon-light" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div class="h-1 bg-gray-200 dark:bg-gray-800 w-full">
+            <div id="progress-bar" class="h-full bg-green-500 w-0"></div>
+        </div>
+    </header>
+
+    <!-- Overlay móvil -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+    <div class="flex pt-[68px] h-full w-full max-w-7xl mx-auto">
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 pt-[68px] lg:pt-0 z-50 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 flex flex-col h-full shadow-2xl lg:shadow-none">
+            <div class="p-5 overflow-y-auto flex-1 space-y-2">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 ml-2">Índice del Libro</div>
+                
+                <button onclick="nav('intro')" id="btn-intro" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 active-nav">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    Portada e Introducción
+                </button>
+                <button onclick="nav('tema1')" id="btn-tema1" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    1. ¿Qué es programar?
+                </button>
+                <button onclick="nav('tema2')" id="btn-tema2" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    2. Descomponer y Abstraer
+                </button>
+                <button onclick="nav('tema3')" id="btn-tema3" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    3. Algoritmos y Trazas
+                </button>
+                <button onclick="nav('resumen')" id="btn-resumen" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    Resumen Final
+                </button>
+                <button onclick="nav('esquema')" id="btn-esquema" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-medium flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div class="w-2 h-2 rounded-full bg-green-500 opacity-0 indicator"></div>
+                    Esquema Estructural
+                </button>
+                
+                <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-800">
+                    <button onclick="nav('ejercicios')" id="btn-ejercicios" class="nav-btn w-full text-left px-4 py-3 rounded-xl transition-all font-bold text-green-600 dark:text-green-400 flex items-center gap-3 hover:bg-green-50 dark:hover:bg-green-900/30">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        Generador Ejercicios IA
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto h-full p-6 lg:p-12 scroll-smooth" id="scroll-container" onscroll="updateProgress()">
+            <div class="max-w-3xl mx-auto pb-32">
+                
+                <!-- SECCIÓN: PORTADA -->
+                <section id="intro" class="content-section active">
+                    <div class="text-center py-10 lg:py-20">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-bold text-sm tracking-wide mb-6">Módulo CVOPM190</span>
+                        <h1 class="text-5xl lg:text-6xl border-none mb-6 text-gray-900 dark:text-white font-extrabold tracking-tight">Introducción a la <span class="text-green-600 dark:text-green-400">Programación</span></h1>
+                        <p class="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-xl mx-auto">Grado Medio de Sistemas Microinformáticos y Redes (SMR). Unidad de Trabajo 1.</p>
+                        
+                        <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 text-left relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+                            <h3 class="text-2xl font-bold mb-4 flex items-center gap-2"><svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ¿Qué vas a aprender?</h3>
+                            <p class="text-gray-600 dark:text-gray-300">En este libro interactivo no vas a teclear código extraño ni pantallitas de hacker. Vamos a aprender a <strong>pensar como programadores</strong>. Aprenderemos a trocear problemas gigantes en partes pequeñas, a dibujar la solución en papel y a entender cómo funciona el cerebro de un ordenador antes de darle órdenes en lenguaje Java.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end mt-8">
+                        <button onclick="nav('tema1')" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-green-500/30 transition-transform transform hover:-translate-y-1 flex items-center gap-2">
+                            Empezar Tema 1 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </div>
+                </section>
+
+                <section id="tema1" class="content-section">
+                    <h1>Tema 1: ¿Qué significa programar?</h1>
+                    <p>Cuando empezamos en SMR, muchos pensamos que programar consiste exclusivamente en escribir líneas de código a toda velocidad en pantallas oscuras. ¡Falso! En nuestro día a día profesional, programar es, ante todo, <strong>automatizar tareas aburridas y resolver problemas de manera lógica</strong>.</p>
+                    
+                    <div class="my-8 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-6 rounded-2xl">
+                        <h3 class="text-amber-800 dark:text-amber-400 font-bold text-xl mb-3 flex items-center gap-2">🍳 La Analogía de la Cocina</h3>
+                        <p class="mb-4">Es vital no confundir estos 4 conceptos básicos:</p>
+                        <ul class="space-y-3 m-0">
+                            <li><strong class="text-amber-900 dark:text-amber-300">1. El Problema:</strong> Tengo hambre y quiero una tortilla. <em>(La necesidad real)</em></li>
+                            <li><strong class="text-amber-900 dark:text-amber-300">2. El Algoritmo:</strong> La receta paso a paso escrita en un post-it. <em>(Entendible por ti)</em></li>
+                            <li><strong class="text-amber-900 dark:text-amber-300">3. El Programa:</strong> La receta adaptada a las órdenes digitales de una Thermomix. <em>(Adaptado a la máquina)</em></li>
+                            <li><strong class="text-amber-900 dark:text-amber-300">4. El Lenguaje:</strong> El idioma y los botones que entiende la Thermomix. <em>(En clase usaremos Java)</em></li>
+                        </ul>
+                    </div>
+
+                    <h2>El Modelo E-P-S (Entrada - Proceso - Salida)</h2>
+                    <p>Casi cualquier programa del mundo funciona como una fábrica que tritura datos siguiendo este esquema imbatible:</p>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 my-8">
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 p-6 rounded-2xl text-center relative">
+                            <div class="text-4xl mb-3">📥</div>
+                            <h4 class="font-bold text-blue-800 dark:text-blue-400 text-lg">1. ENTRADA (Input)</h4>
+                            <p class="text-sm mt-3 text-blue-900/80 dark:text-blue-200/80">Los datos iniciales que recibe el sistema. <br><br><em>Ej: RAM del PC (4 GB).</em></p>
+                        </div>
+                        <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800/50 p-6 rounded-2xl text-center relative">
+                            <div class="text-4xl mb-3">⚙️</div>
+                            <h4 class="font-bold text-purple-800 dark:text-purple-400 text-lg">2. PROCESO</h4>
+                            <p class="text-sm mt-3 text-purple-900/80 dark:text-purple-200/80">Cálculos matemáticos y decisiones lógicas. <br><br><em>Ej: ¿Es 4 menor que 8?</em></p>
+                            <svg class="hidden md:block absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 p-6 rounded-2xl text-center relative">
+                            <div class="text-4xl mb-3">📤</div>
+                            <h4 class="font-bold text-green-800 dark:text-green-400 text-lg">3. SALIDA (Output)</h4>
+                            <p class="text-sm mt-3 text-green-900/80 dark:text-green-200/80">El resultado devuelto a la pantalla. <br><br><em>Ej: Mostrar "Ampliación recomendada".</em></p>
+                            <svg class="hidden md:block absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+                        <button onclick="nav('intro')" class="text-gray-500 hover:text-green-600 font-medium flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Portada</button>
+                        <button onclick="nav('tema2')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:-translate-y-0.5 flex items-center gap-2">Tema 2 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                </section>
+
+                <section id="tema2" class="content-section">
+                    <h1>Tema 2: Descomponer y Abstraer</h1>
+                    <p>Para resolver problemas informáticos sin explotar en el intento, utilizamos el <strong>Pensamiento Computacional</strong>. Este pensamiento tiene 4 pilares mágicos, pero hoy nos centraremos en los 3 primeros (el 4º son los algoritmos).</p>
+
+                    <h2>1. Descomposición: Divide y vencerás</h2>
+                    <p>Intentar programar una aplicación entera de golpe es un suicidio técnico. <strong>Descomponer</strong> consiste en trocear un problema gigantesco (ej. construir <em>SMR Manager</em>) en piezas pequeñas de Lego que podamos probar por separado.</p>
+                    <div class="pl-6 border-l-4 border-green-500 my-6 italic text-gray-600 dark:text-gray-400">
+                        En lugar de programar "toda la gestión", programamos: 1. Ficha de equipo. 2. Botón de avería. 3. Comprobador de IP.
+                    </div>
+
+                    <h2>2. Reconocimiento de Patrones</h2>
+                    <p>Un patrón es una estructura que se repite. Al detectarlos, nos ahorramos reinventar la rueda. Por ejemplo, ¿te has fijado que iniciar sesión en Instagram o en AULES es exactamente el mismo patrón interno para la máquina?</p>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl text-center font-mono text-sm text-green-700 dark:text-green-400">
+                        Pedir Usuario/Pass ➔ Validar en Base de Datos ➔ Si OK entrar ➔ Si FALLO avisar.
+                    </div>
+
+                    <h2>3. Abstracción: Ignora el ruido</h2>
+                    <p>Abstraer es el arte de quedarse <strong>solo con la información útil</strong> para tu objetivo actual, eliminando todo lo demás.</p>
+                    
+                    <div class="my-8 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-800 p-6 rounded-2xl flex flex-col sm:flex-row gap-6 items-center">
+                        <div class="text-6xl">🗺️</div>
+                        <div>
+                            <h3 class="text-sky-800 dark:text-sky-400 font-bold text-xl mb-2">El Mapa del Metro</h3>
+                            <p class="m-0 text-sm text-sky-900 dark:text-sky-200">Un plano de metro es pura abstracción. No dibuja las alcantarillas, ni la curva real de la calle, ni de qué color es el túnel. Solo pinta líneas rectas y puntos de estaciones. ¿Por qué? Porque para viajar, <strong>el resto de la información es ruido irrelevante</strong>. En programación hacemos exactamente lo mismo con los datos de un problema.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+                        <button onclick="nav('tema1')" class="text-gray-500 hover:text-green-600 font-medium flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Tema 1</button>
+                        <button onclick="nav('tema3')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:-translate-y-0.5 flex items-center gap-2">Tema 3 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                </section>
+
+                <section id="tema3" class="content-section">
+                    <h1>Tema 3: Algoritmos y Trazas</h1>
+                    <p>Ya hemos entendido el problema, lo hemos troceado y limpiado. Toca escribir la receta paso a paso: <strong>el algoritmo</strong>. Recuerda que debe ser finito (tener fin) y no tener instrucciones ambiguas (nada de "pon una pizca de sal").</p>
+
+                    <h2>1. Pseudocódigo: El "Spanglish" del código</h2>
+                    <p>El español normal es demasiado ambiguo. El Java real es demasiado estricto. El <strong>Pseudocódigo</strong> es nuestro borrador intermedio. Usamos palabras en mayúscula como "reglas del juego":</p>
+                    
+<pre><code><span class="pseudocode-word">INICIO</span>
+  <span class="pseudocode-word">LEER</span> ram_actual
+  <span class="pseudocode-word">SI</span> ram_actual >= 8 <span class="pseudocode-word">ENTONCES</span>
+    <span class="pseudocode-word">ESCRIBIR</span> "Equipo APTO"
+  <span class="pseudocode-word">SINO</span>
+    <span class="pseudocode-word">ESCRIBIR</span> "Necesita ampliación"
+  <span class="pseudocode-word">FIN_SI</span>
+<span class="pseudocode-word">FIN</span></code></pre>
+
+                    <h2>2. Las 3 únicas estructuras del mundo</h2>
+                    <p>Aunque parezca increíble, GTA V o WhatsApp están construidos combinando millones de veces solo estas tres piezas de Lego:</p>
+                    <div class="space-y-4 my-6">
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <strong>1. Secuencia:</strong> Leer línea a línea hacia abajo (hacer A, luego B, luego C).
+                        </div>
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <strong>2. Decisión (Bifurcación):</strong> El famoso <code>SI...SINO</code>. El tren elige una vía según una condición.
+                        </div>
+                        <div class="p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <strong>3. Repetición (Bucles):</strong> <code>MIENTRAS</code> o <code>PARA</code>. Repetir un bloque de código 30 veces sin tener que copiarlo y pegarlo 30 veces.
+                        </div>
+                    </div>
+
+                    <h2>3. Trazas: Juega a ser la máquina</h2>
+                    <p>Antes de pasar el pseudocódigo a Java, hay que comprobar si funciona. Hacer una <strong>traza</strong> es dibujar una tabla e inventarte datos falsos extremos (valores límite) para ver si la máquina se equivocaría o no.</p>
+
+                    <div class="flex justify-between items-center mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+                        <button onclick="nav('tema2')" class="text-gray-500 hover:text-green-600 font-medium flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Tema 2</button>
+                        <button onclick="nav('resumen')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:-translate-y-0.5 flex items-center gap-2">Resumen <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                </section>
+
+                <section id="resumen" class="content-section">
+                    <h1>Resumen Final de la UT1</h1>
+                    <div class="space-y-4">
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border-l-4 border-green-500">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">1. Programar es Resolver</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">El código Java es solo la traducción final. El verdadero trabajo es entender la necesidad y diseñar la lógica en papel.</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border-l-4 border-green-500">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">2. Los 4 Pilares del Pensamiento Computacional</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 m-0"><strong>Descomposición</strong> (trocear), <strong>Patrones</strong> (reutilizar), <strong>Abstracción</strong> (filtrar lo inútil) y <strong>Algoritmos</strong> (pasos ordenados).</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border-l-4 border-green-500">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">3. El Modelo E-P-S</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 m-0">Toda arquitectura procesa <strong>Entradas</strong> (datos), realiza un <strong>Proceso</strong> (cálculos/condiciones) y produce una <strong>Salida</strong> (resultado).</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+                        <button onclick="nav('tema3')" class="text-gray-500 hover:text-green-600 font-medium flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Tema 3</button>
+                        <button onclick="nav('esquema')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:-translate-y-0.5 flex items-center gap-2">Ver Esquema <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                </section>
+
+                <section id="esquema" class="content-section">
+                    <h1>Esquema Estructural</h1>
+                    <div class="relative py-10 my-8">
+                        <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-green-500 -translate-x-1/2 z-0 hidden md:block"></div>
+                        <div class="relative z-10 bg-green-600 text-white font-bold text-center p-4 rounded-xl shadow-lg max-w-sm mx-auto mb-10">PENSAMIENTO COMPUTACIONAL</div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-2 border-green-500 text-center transform md:translate-x-4">
+                                <div class="font-black text-2xl text-green-600 dark:text-green-400 mb-2">1. Descomponer</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Trocear en subproblemas funcionales.</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-2 border-green-500 text-center transform md:-translate-x-4">
+                                <div class="font-black text-2xl text-green-600 dark:text-green-400 mb-2">2. Patrones</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Reutilizar estructuras lógicas conocidas.</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-2 border-green-500 text-center transform md:translate-x-4">
+                                <div class="font-black text-2xl text-green-600 dark:text-green-400 mb-2">3. Abstracción</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Filtrar datos clave, ignorar ruido.</p>
+                            </div>
+                            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-2 border-green-500 text-center transform md:-translate-x-4">
+                                <div class="font-black text-2xl text-green-600 dark:text-green-400 mb-2">4. Algoritmos</div>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Modelo E-P-S, Pseudocódigo y Trazas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+                        <button onclick="nav('resumen')" class="text-gray-500 hover:text-green-600 font-medium flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Resumen</button>
+                        <button onclick="nav('ejercicios')" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold shadow-md transition-transform transform hover:-translate-y-0.5 flex items-center gap-2">¡A Practicar! <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                </section>
+
+                <section id="ejercicios" class="content-section">
+                    <h1 class="flex items-center gap-3">
+                        <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg> 
+                        Autoevaluación Inteligente
+                    </h1>
+                    <p>Demuestra lo que has aprendido. Tienes a tu disposición un generador infinito de preguntas.</p>
+                    
+                    <div class="bg-gradient-to-br from-green-600 to-teal-700 rounded-3xl p-8 text-center shadow-xl text-white mb-10 relative overflow-hidden">
+                        <!-- Background glow -->
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+                        <h2 class="text-2xl text-white font-bold mb-2 mt-0">Generador de Examen</h2>
+                        <p class="text-green-100 mb-6 max-w-lg mx-auto">Pulsa el botón para generar 10 preguntas tipo test aleatorias sobre el temario de la UT1. El sistema intentará usar la IA de Gemini, o nuestro banco de preguntas interno anti-fallos.</p>
+                        
+                        <button id="btn-generar" onclick="generarEjercicios()" class="bg-white text-green-700 hover:bg-green-50 px-8 py-4 rounded-full font-extrabold shadow-lg transition-transform transform hover:scale-105 flex items-center gap-3 mx-auto">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Generar 10 Ejercicios Nuevos
+                        </button>
+                    </div>
+
+                    <div id="ejercicios-container" class="space-y-6">
+                        <!-- Aquí se inyectan los ejercicios -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de Ajustes -->
+    <div id="settings-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full shadow-2xl transform transition-all">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Configuración IA</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Si estás alojando esta web en GitHub, puedes guardar tu clave secreta de Gemini aquí. Se guardará de forma segura y privada en tu navegador (Local Storage).</p>
+            
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">API Key de Google (AIza...)</label>
+            <input type="password" id="api-key-input" placeholder="Pega tu API key aquí..." class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-green-500 focus:outline-none mb-6 text-gray-800 dark:text-white">
+            
+            <div class="flex gap-3 justify-end">
+                <button onclick="closeSettings()" class="px-5 py-2.5 rounded-xl font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">Cancelar</button>
+                <button onclick="saveSettings()" class="px-5 py-2.5 rounded-xl font-bold bg-green-600 text-white hover:bg-green-700 transition shadow-md">Guardar y Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-6 py-4 rounded-2xl shadow-2xl font-medium flex items-center gap-3">
+        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        <span id="toast-msg">Mensaje</span>
+    </div>
+
+    <script>
+        // --- NAVEGACIÓN Y UI ---
+        function nav(id) {
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'active-nav');
+                btn.querySelector('.indicator').classList.remove('opacity-100');
+            });
+            
+            const activeBtn = document.getElementById('btn-' + id);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-gray-100', 'dark:bg-gray-800', 'active-nav');
+                activeBtn.querySelector('.indicator').classList.add('opacity-100');
+            }
+
+            if (window.innerWidth < 1024) toggleSidebar();
+            document.getElementById('scroll-container').scrollTop = 0;
+            updateProgress();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function updateProgress() {
+            const container = document.getElementById('scroll-container');
+            const scrollPercent = (container.scrollTop / (container.scrollHeight - container.clientHeight)) * 100;
+            document.getElementById('progress-bar').style.width = scrollPercent + '%';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 5000);
+        }
+
+        // --- MODO OSCURO ---
+        const themeBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-icon-dark');
+        const lightIcon = document.getElementById('theme-icon-light');
+
+        function updateThemeIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                darkIcon.classList.remove('hidden'); lightIcon.classList.add('hidden');
+            } else {
+                lightIcon.classList.remove('hidden'); darkIcon.classList.add('hidden');
+            }
+        }
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        updateThemeIcons();
+
+        themeBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateThemeIcons();
+        });
+
+        // --- AJUSTES Y API KEY ---
+        function openSettings() {
+            document.getElementById('api-key-input').value = localStorage.getItem('vivi_gemini_key') || '';
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+        
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            const key = document.getElementById('api-key-input').value.trim();
+            if(key) localStorage.setItem('vivi_gemini_key', key);
+            else localStorage.removeItem('vivi_gemini_key');
+            closeSettings();
+            showToast("Configuración guardada en tu navegador.");
+        }
+
+        // --- MOTOR OFFLINE (EL SALVAVIDAS ANTI-ERRORES) ---
+        const bancoLocal = [
+            { pregunta: "En el modelo E-P-S, los datos que teclea el usuario se consideran:", opciones: ["Proceso", "Entrada", "Salida", "Algoritmo"], respuestaCorrecta: 1, explicacion: "Todo lo que entra al sistema inicialmente es la Entrada (Input)." },
+            { pregunta: "¿Cuál de estos NO es un pilar del pensamiento computacional?", opciones: ["Abstracción", "Algoritmos", "Descomposición", "Compilación en Java"], respuestaCorrecta: 3, explicacion: "La compilación es un paso técnico, no un pilar del diseño lógico previo." },
+            { pregunta: "¿Qué figura geométrica representa un 'Proceso' en un diagrama de flujo?", opciones: ["Rombo", "Óvalo", "Rectángulo", "Paralelogramo"], respuestaCorrecta: 2, explicacion: "El rectángulo marca operaciones matemáticas o procesos." },
+            { pregunta: "Si tienes que programar un 'Registro de Usuario', ¿qué técnica usas al dividirlo en 'Pedir Email' y 'Comprobar Contraseña'?", opciones: ["Descomposición", "Abstracción", "Bucle MIENTRAS", "Traza"], respuestaCorrecta: 0, explicacion: "Estás troceando un problema grande en partes pequeñas funcionales." },
+            { pregunta: "La estructura lógica que permite elegir entre dos caminos (Ej. SI...SINO) se llama:", opciones: ["Secuencia", "Decisión", "Repetición", "Abstracción"], respuestaCorrecta: 1, explicacion: "Es una bifurcación o decisión donde el programa evalúa una condición." },
+            { pregunta: "¿Qué significa hacer una 'Traza'?", opciones: ["Borrar el disco duro", "Pasar el código a Java", "Simular el algoritmo a mano con datos inventados", "Dibujar óvalos"], respuestaCorrecta: 2, explicacion: "Es probar tu lógica jugando a ser el ordenador para encontrar fallos." },
+            { pregunta: "En un mapa de Metro, no se dibujan las calles. ¿Qué pilar del pensamiento computacional es esto?", opciones: ["Algoritmos", "Abstracción", "Patrones", "Secuencia"], respuestaCorrecta: 1, explicacion: "La abstracción elimina el ruido irrelevante y se queda solo con lo necesario." },
+            { pregunta: "Comprobar que un email tiene '@' y que una contraseña tiene 8 letras, son ejemplos de...", opciones: ["Patrones repetidos (Validación)", "Bucles infinitos", "Traza de valores límite", "Error 404"], respuestaCorrecta: 0, explicacion: "Ambas tareas comparten el mismo patrón lógico: pedir dato -> validar estructura." },
+            { pregunta: "¿Qué figura del diagrama de flujo siempre tiene DOS flechas saliendo de ella?", opciones: ["Rectángulo", "Óvalo", "Rombo (Decisión)", "Línea"], respuestaCorrecta: 2, explicacion: "El Rombo (pregunta) siempre tiene un camino para 'Sí' y otro para 'No'." },
+            { pregunta: "¿Puede un algoritmo quedarse atascado funcionando para siempre?", opciones: ["Sí, si el PC es potente", "No, debe ser FINITO", "Solo si está en Java", "Sí, si tiene un patrón"], respuestaCorrecta: 1, explicacion: "Una regla fundamental de un algoritmo es que siempre debe tener un final." },
+            { pregunta: "Si en pseudocódigo usamos `PARA cada equipo DEL aula...`, estamos usando una estructura de:", opciones: ["Secuencia", "Decisión", "Repetición (Bucle)"], respuestaCorrecta: 2, explicacion: "Estamos repitiendo una acción múltiples veces." },
+            { pregunta: "La fase de un programa donde se compara si `RAM < 8` pertenece al...", opciones: ["Proceso", "Entrada", "Salida", "Hardware"], respuestaCorrecta: 0, explicacion: "Las comparaciones matemáticas son procesos internos." },
+            { pregunta: "Un buen algoritmo no debe tener ambigüedades. Eso significa que...", opciones: ["Debe ser preciso", "Debe ser corto", "Debe ser en inglés", "Debe usar rombos"], respuestaCorrecta: 0, explicacion: "La precisión asegura que la máquina no tenga que adivinar qué querías decir." },
+            { pregunta: "Si al hacer una traza probamos el número exacto donde cambia una condición, estamos probando...", opciones: ["Un valor nulo", "Un valor límite", "Un error de sintaxis", "Un patrón"], respuestaCorrecta: 1, explicacion: "Los valores límite son los mejores para descubrir errores sutiles (ej: usar < en vez de <=)." },
+            { pregunta: "El Pseudocódigo sirve para...", opciones: ["Programar apps en iPhone", "Hackear sistemas", "Pensar y diseñar la lógica sin la presión del código estricto", "Pintar diagramas"], respuestaCorrecta: 2, explicacion: "Es el idioma intermedio entre humano y máquina." }
+        ];
+
+        // --- GENERADOR DE EJERCICIOS ---
+        async function generarEjercicios() {
+            const btn = document.getElementById('btn-generar');
+            const container = document.getElementById('ejercicios-container');
+            
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-green-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Creando test...`;
+            
+            let storedKey = localStorage.getItem('vivi_gemini_key');
+            let apiKey = storedKey ? storedKey : ""; // Si está vacío, Canvas inyectará la suya internamente aquí.
+            
+            let ejercicios = [];
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: "Eres un profesor de SMR. Genera 10 preguntas tipo test, difíciles y pensadas, sobre los pilares del pensamiento computacional, el modelo E-P-S, los algoritmos, trazas y pseudocódigo. Deben ser variadas y sin repetir conceptos. Devuelve la salida obligatoriamente con el JSON schema solicitado." }] }],
+                        generationConfig: {
+                            responseMimeType: "application/json",
+                            responseSchema: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        pregunta: { type: "STRING" },
+                                        opciones: { type: "ARRAY", items: { type: "STRING" } },
+                                        respuestaCorrecta: { type: "INTEGER" },
+                                        explicacion: { type: "STRING" }
+                                    },
+                                    required: ["pregunta", "opciones", "respuestaCorrecta", "explicacion"]
+                                }
+                            }
+                        }
+                    })
+                });
+
+                if (!response.ok) throw new Error("Fallo API");
+                
+                const data = await response.json();
+                const textoJSON = data.candidates[0].content.parts[0].text;
+                ejercicios = JSON.parse(textoJSON);
+
+            } catch (error) {
+                console.log("Fallo conectando con Gemini. Usando motor offline de rescate.", error);
+                showToast("Activado Motor Offline. IA no disponible en este momento.");
+                
+                // Generar 10 aleatorios del banco local sin repetir
+                let shuffled = bancoLocal.sort(() => 0.5 - Math.random());
+                ejercicios = shuffled.slice(0, 10);
+            }
+
+            renderizarEjercicios(ejercicios);
+            
+            btn.disabled = false;
+            btn.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> Generar Otros 10 Ejercicios`;
+        }
+
+        // --- RENDER Y VALIDACIÓN ---
+        function renderizarEjercicios(lista) {
+            const container = document.getElementById('ejercicios-container');
+            container.innerHTML = '';
+            
+            lista.forEach((ej, index) => {
+                const cardId = `ej-${index}`;
+                let html = `
+                <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 relative overflow-hidden group">
+                    <div class="absolute left-0 top-0 h-full w-1.5 bg-gray-200 dark:bg-gray-700 group-hover:bg-green-400 transition-colors"></div>
+                    <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-4 pl-3"><span class="text-green-500 mr-2">${index + 1}.</span> ${ej.pregunta}</h3>
+                    <div class="space-y-3 pl-3">
+                `;
+                
+                ej.opciones.forEach((op, opIndex) => {
+                    html += `
+                        <label class="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+                            <input type="radio" name="${cardId}" value="${opIndex}" class="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500 bg-gray-100 dark:bg-gray-900 dark:border-gray-600">
+                            <span class="ml-3 text-gray-700 dark:text-gray-300">${op}</span>
+                        </label>
+                    `;
+                });
+
+                // Codificamos la explicación en base64 de forma segura (soporta acentos)
+                const safeExplicacion = btoa(unescape(encodeURIComponent(ej.explicacion)));
+
+                html += `
+                    </div>
+                    <div class="mt-6 pl-3">
+                        <button onclick="validarRespuesta('${cardId}', ${ej.respuestaCorrecta}, '${safeExplicacion}')" class="bg-gray-900 dark:bg-gray-700 text-white hover:bg-green-600 dark:hover:bg-green-600 px-6 py-2.5 rounded-xl font-medium transition-colors text-sm">Comprobar Respuesta</button>
+                    </div>
+                    <div id="fb-${cardId}" class="hidden mt-4 pl-3 p-4 rounded-xl text-sm font-medium"></div>
+                </div>`;
+                
+                container.innerHTML += html;
+            });
+        }
+
+        function validarRespuesta(cardId, correcta, explB64) {
+            const inputs = document.getElementsByName(cardId);
+            let seleccion = -1;
+            for(let radio of inputs) {
+                if(radio.checked) { seleccion = parseInt(radio.value); break; }
+            }
+
+            const fb = document.getElementById(`fb-${cardId}`);
+            fb.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'dark:bg-green-900/40', 'dark:text-green-300', 'dark:bg-red-900/40', 'dark:text-red-300');
+            
+            if (seleccion === -1) {
+                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/40', 'dark:text-red-300');
+                fb.innerText = "⚠️ Por favor, selecciona una opción.";
+                return;
+            }
+
+            const explicacion = decodeURIComponent(escape(atob(explB64)));
+
+            if (seleccion === correcta) {
+                fb.classList.add('bg-green-100', 'text-green-800', 'dark:bg-green-900/40', 'dark:text-green-300');
+                fb.innerHTML = `✅ <strong>¡Correcto!</strong> ${explicacion}`;
+            } else {
+                fb.classList.add('bg-red-100', 'text-red-800', 'dark:bg-red-900/40', 'dark:text-red-300');
+                fb.innerHTML = `❌ <strong>Incorrecto.</strong> ${explicacion}`;
+            }
+        }
+    </script>
+</body>
+</html>
